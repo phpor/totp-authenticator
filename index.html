@@ -528,6 +528,14 @@ function initTheme() {
   const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
   applyTheme(dark);
 }
+/* 锁定按钮图标：随锁状态切换（空锁 = 未启用 PIN；实心锁 = 已启用，点击可立即锁定） */
+function updateLockIcon() {
+  const hasVault = !!localStorage.getItem(LS_VAULT);
+  $('#lockbtn').title = hasVault ? '点击立即锁定' : '设置 PIN 加密锁';
+  $('#lockbtn').innerHTML = hasVault
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="15.5" r="1.6" fill="currentColor"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.6-1.1"/><path d="M12 14.6v2" stroke-linecap="round"/></svg>';
+}
 
 /* ---------- 事件绑定（列表交互） ---------- */
 function bindListEvents() {
@@ -738,6 +746,7 @@ async function handlePinComplete() {
       await lockVault(pin);
       sessionPin = pin;
       hideLock(); renderList(); await refreshAll(true); startTicker();
+      updateLockIcon();
       toast('PIN 已启用');
     } else {
       $('#pinerr').textContent = '两次输入不一致，请重新设置';
@@ -784,6 +793,7 @@ async function init() {
   });
   $('#lockbtn').addEventListener('click', onLockBtn);
   setupKeypad();
+  updateLockIcon();
 
   if (localStorage.getItem(LS_VAULT)) {
     showLock('unlock');
