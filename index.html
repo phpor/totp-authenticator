@@ -78,6 +78,7 @@ header{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 8
 /* ===== 弹层 ===== */
 .overlay{position:fixed;inset:0;background:rgba(10,15,25,.55);z-index:40;display:none;align-items:flex-end;justify-content:center}
 .overlay.show{display:flex}
+#delOverlay{z-index:70}
 .sheet{width:100%;max-width:520px;max-height:88vh;overflow-y:auto;background:var(--card);border-radius:20px 20px 0 0;padding:18px 18px 26px;animation:up .22s ease}
 @keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
 .sheethead{display:flex;align-items:center;margin-bottom:14px}
